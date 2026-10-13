@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>《基于ANOVA与XBAR-R模型对比的高频微波测量误差剥离研究》</title>
 
-  <!-- Global site tag (gtag.js) - Google Analytics (可以保留或替换为您自己的) -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -18,6 +18,10 @@
     gtag('js', new Date());
     gtag('config', 'G-PYVRSFMDRL');
   </script>
+
+  <!-- MathJax 数学公式渲染引擎 -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
   <link rel="stylesheet" href="./static/css/bulma.min.css">
@@ -60,7 +64,6 @@
     <div class="container is-max-desktop">
       <div class="columns is-centered">
         <div class="column has-text-centered">
-          
           <!-- 中英文主标题 -->
           <h1 class="title is-3 publication-title">基于 ANOVA 与 XBAR-R 模型对比的<br>高频微波测量误差剥离研究<br><small style="font-size: 0.7em; color: #555;">——以无人机图传为例</small></h1>
           <h1 class="title is-5 publication-title" style="color: #666; margin-top: 15px; margin-bottom: 30px;">
@@ -82,7 +85,7 @@
 
           <div class="column has-text-centered">
             <div class="publication-links">
-              <!-- Code Link. -->
+              <!-- Code Link -->
               <span class="link-block">
                 <a href="https://github.com/zc3601/UAV_Microwave_GageRR"
                    class="external-link button is-normal is-rounded is-dark">
@@ -92,7 +95,7 @@
                   <span>Code & Data</span>
                 </a>
               </span>
-              <!-- Paper Link (暂无PDF链接，用占位符代替，见刊后可在此添加href) -->
+              <!-- Paper Link -->
               <span class="link-block">
                 <a class="external-link button is-normal is-rounded is-dark" disabled>
                   <span class="icon">
@@ -111,7 +114,7 @@
 
 <section class="section">
   <div class="container is-max-desktop">
-    <!-- Abstract. -->
+    <!-- Abstract -->
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
         <h2 class="title is-3">Abstract / 摘要</h2>
@@ -125,23 +128,66 @@
         </div>
       </div>
     </div>
-    <!--/ Abstract. -->
   </div>
 </section>
 
-<!-- 预留图表展示区，如果后续有图片可以取消注释 -->
-<!--
-<section class="section">
+<!-- 核心理论区：引言与数学模型 -->
+<section class="section" style="background-color: #f5f5f5;">
   <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
+    <!-- Introduction -->
+    <div class="columns is-centered">
       <div class="column is-full-width">
-        <h2 class="title is-3">Method & Results</h2>
-        <img src="./static/images/your-image.png" alt="Experimental Results"/>
+        <h2 class="title is-3">1. 引言 (Introduction)</h2>
+        <div class="content has-text-justified">
+          <p>
+            测量系统分析（Measurement System Analysis，简称 MSA）是现代质量工程中用于量化和评估测量误差的系统化评价框架。在高端制造与精密测控领域，测量总变异通常被划分为系统误差与随机误差。系统误差可通过标准件定期校准予以纠正；然而，由人员、设备与测试环境多维交互引起的随机误差，往往表现出高度的非线性与隐蔽性。
+          </p>
+          <p>
+            传统工业界在评估此类随机误差时，高度依赖于均值极差（XBAR-R）模型。但随着现代工业测试精度不断逼近设备的物理极限，XBAR-R 模型基于单因素极差估算的数学局限性日益凸显——其在底层算法上无法有效识别并剥离复杂测量过程中的<strong>交互作用（Interaction）</strong>，极易导致对测量系统真实变异水平的严重误判。
+          </p>
+          <p>
+            这一理论缺陷在微波高频段的射频精密测量中表现得尤为致命。以巡检无人机数据链的图传发射功率测量为例，工程标准对 2.25 GHz 中心频段的发射功率提出了 30 dBm ± 3 dBm 的极其严苛的管控要求。在如此精密的测量场景下，测试人员的拿取姿势、图传模块放置角度、射频线缆弯折曲率及 SMA 接头拧紧力矩等极其微小的物理状态改变，都会与特定的图传模块产生强烈的<strong>“人机位姿耦合”</strong>，进而催生出足以使系统评价失效的巨大交互变异。
+          </p>
+        </div>
+
+        <br>
+
+        <h2 class="title is-3">2. 理论框架与数学模型 (Methodology)</h2>
+        <h3 class="title is-4">2.1 传统 XBAR-R 模型的数学局限性</h3>
+        <div class="content has-text-justified">
+          <p>
+            当前工业界广泛使用的均值极差（XBAR-R）模型，其底层数学逻辑假设测量过程中的各变量相互独立。在该模型框架下，系统的总方差 \(\sigma_{TV}^2\) 被简化拆解为零件间变异 \(\sigma_{PV}^2\)、设备变异（重复性） \(\sigma_{EV}^2\) 与评价者变异（再现性） \(\sigma_{AV}^2\) 的线性叠加：
+          </p>
+          <p style="text-align: center; font-size: 1.2em;">
+            $$\sigma_{TV}^2 = \sigma_{PV}^2 + \sigma_{EV}^2 + \sigma_{AV}^2$$
+          </p>
+          <p>
+            该公式表明，传统 XBAR-R 模型天生缺失了“交互作用（Interaction）”项。在常规机械测量中，这一假设尚可成立；但在 2.25 GHz 无人机图传等高频微波测量中，因阻抗失配与空间辐射引发的“人机位姿耦合”异常强烈，这种强行假设变量独立的数学盲区，会直接导致严重的系统误判。
+          </p>
+        </div>
+
+        <h3 class="title is-4">2.2 双因素 ANOVA 模型的矩阵解构</h3>
+        <div class="content has-text-justified">
+          <p>
+            为突破上述局限，本研究引入具备高阶方差矩阵解构能力的双因素方差分析（Two-Way ANOVA）模型。该模型在总方差拆解中，明确剥离出了“评价者与零件的交互作用（Interaction）”变异 \(\sigma_{INT}^2\)：
+          </p>
+          <p style="text-align: center; font-size: 1.2em;">
+            $$\sigma_{TV}^2 = \sigma_{PV}^2 + \sigma_{EV}^2 + \sigma_{AV}^2 + \sigma_{INT}^2$$
+          </p>
+          <p>
+            为了定量检验“人机位姿耦合”交互作用的显著性，ANOVA 模型通过均方（MS）构造 \(F\) 统计量进行假设检验：
+          </p>
+          <p style="text-align: center; font-size: 1.2em;">
+            $$F_{Interaction} = \frac{MS_{Interaction}}{MS_{Error}}$$
+          </p>
+          <p>
+            当 \(F_{Interaction}\) 对应的 \(P\) 值小于显著性水平 \(\alpha\) 时，即可在数学上确诊交互病灶的客观存在，从而弥补 XBAR-R 模型的先天缺陷，为后续的防呆治具重构提供绝对的数据支撑。
+          </p>
+        </div>
       </div>
     </div>
   </div>
 </section>
--->
 
 <section class="section" id="BibTeX">
   <div class="container is-max-desktop content">
@@ -166,9 +212,7 @@
       <div class="column is-8">
         <div class="content">
           <p>
-            This website is licensed under a <a rel="license"
-                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
-            Commons Attribution-ShareAlike 4.0 International License</a>.
+            This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
           </p>
           <p>
             This page follows the structure of the <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a> academic project page template.
